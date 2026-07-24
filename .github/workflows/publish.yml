@@ -1,8 +1,7 @@
 name: Deploy goingspot API
 
 on:
-  push:
-    branches: [dev]
+  workflow_dispatch:
 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_TOKEN }}
@@ -14,7 +13,7 @@ jobs:
 
     steps:
       - name: Fetch repository source code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Fly.io CLI (flyctl)
         uses: superfly/flyctl-actions/setup-flyctl@master
