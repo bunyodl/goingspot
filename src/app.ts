@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
 
 import apiV1Router from '@/modules/api-v1.router';
@@ -7,6 +8,7 @@ import { errorMiddleware } from '@/common/middlewares/error.middleware';
 const app = express();
 
 app.use(express.json()); // parse JSON body
+app.use(cookieParser());
 app.use('/api/v1', apiV1Router);
 
 app.get('/', (_req, res) => {
