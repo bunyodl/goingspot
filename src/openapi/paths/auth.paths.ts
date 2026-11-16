@@ -2,6 +2,8 @@ import {
   loginRequestBodySchema,
   loginResponseSchema,
 } from '@/modules/auth/schemas/endpoints/login.schema';
+import { logoutResponseSchema } from '@/modules/auth/schemas/endpoints/logout.schema';
+import { refreshResponseSchema } from '@/modules/auth/schemas/endpoints/refresh.schema';
 import {
   registerRequestBodySchema,
   registerResponseSchema,
@@ -18,6 +20,16 @@ const registerApiResponseSchema = apiResponseSchema(
 const loginApiResponseSchema = apiResponseSchema(
   loginResponseSchema,
   'LoginApiResponse',
+);
+
+const refreshApiResponseSchema = apiResponseSchema(
+  refreshResponseSchema,
+  'RefreshApiResponse',
+);
+
+const logoutApiResponseSchema = apiResponseSchema(
+  logoutResponseSchema,
+  'LogoutApiResponse',
 );
 
 const userExample = {
@@ -114,6 +126,62 @@ registry.registerPath({
             data: {
               user: userExample,
               accessToken: accessTokenExample,
+            },
+            timestamp: 1_704_067_200_000,
+          },
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/refresh',
+  summary: 'Refresh access token',
+  description:
+    'Rotate the refreshToken cookie and return a new accessToken. Requires the refreshToken cookie.',
+  tags: ['auth'],
+  security: [],
+  responses: {
+    200: {
+      description: 'New access token (Set-Cookie: rotated refreshToken)',
+      content: {
+        'application/json': {
+          schema: refreshApiResponseSchema,
+          example: {
+            code: 200,
+            message: 'Success.',
+            data: {
+              accessToken: accessTokenExample,
+            },
+            timestamp: 1_704_067_200_000,
+          },
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/logout',
+  summary: 'Log out',
+  description:
+    'Revoke the refreshToken cookie row and clear the cookie. Missing or already-revoked cookies still succeed.',
+  tags: ['auth'],
+  security: [],
+  responses: {
+    200: {
+      description: 'Logged out (Set-Cookie clears refreshToken)',
+      content: {
+        'application/json': {
+          schema: logoutApiResponseSchema,
+          example: {
+            code: 200,
+            message: 'Success.',
+            data: {
+              loggedOut: true,
             },
             timestamp: 1_704_067_200_000,
           },
