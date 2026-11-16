@@ -2,6 +2,7 @@ import { type Request, Router } from 'express';
 
 import { eventController } from '@/modules/event/event.controller';
 
+import { authenticate } from '@/common/middlewares/authenticate.middleware';
 import { validate } from '@/common/middlewares/validate.middleware';
 
 import {
@@ -40,6 +41,7 @@ eventsRouter.get(
 
 eventsRouter.post(
   '/',
+  authenticate,
   validate({ body: createEventRequestBodySchema }),
   async (req: Request<{}, {}, CreateEventRequestBody>, res) => {
     await eventController.create(req, res);
@@ -48,6 +50,7 @@ eventsRouter.post(
 
 eventsRouter.patch(
   '/:eventId',
+  authenticate,
   validate({
     params: patchEventParamsSchema,
     body: patchEventRequestBodySchema,
@@ -59,6 +62,7 @@ eventsRouter.patch(
 
 eventsRouter.delete(
   '/:eventId',
+  authenticate,
   validate({ params: getEventParamsSchema }),
   async (req: Request<GetEventParams>, res) => {
     await eventController.delete(req, res);

@@ -1,8 +1,9 @@
 import express, { type Request } from 'express';
 
-import { validate } from '@/common/middlewares/validate.middleware';
-
 import { venueController } from '@/modules/venue/venue.controller';
+
+import { authenticate } from '@/common/middlewares/authenticate.middleware';
+import { validate } from '@/common/middlewares/validate.middleware';
 
 import {
   type CreateVenueRequestBody,
@@ -40,6 +41,7 @@ venuesRouter.get(
 
 venuesRouter.post(
   '/',
+  authenticate,
   validate({ body: createVenueRequestBodySchema }),
   async (req: Request<{}, {}, CreateVenueRequestBody>, res) => {
     await venueController.create(req, res);
@@ -48,6 +50,7 @@ venuesRouter.post(
 
 venuesRouter.patch(
   '/:venueId',
+  authenticate,
   validate({
     params: patchVenueParamsSchema,
     body: patchVenueRequestBodySchema,
@@ -59,6 +62,7 @@ venuesRouter.patch(
 
 venuesRouter.delete(
   '/:venueId',
+  authenticate,
   validate({ params: getVenueParamsSchema }),
   async (req: Request<GetVenueParams>, res) => {
     await venueController.delete(req, res);

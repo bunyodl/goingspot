@@ -2,6 +2,7 @@ import express, { type Request } from 'express';
 
 import { userController } from '@/modules/user/user.controller';
 
+import { authenticate } from '@/common/middlewares/authenticate.middleware';
 import { validate } from '@/common/middlewares/validate.middleware';
 
 import {
@@ -34,6 +35,7 @@ usersRouter.get(
 
 usersRouter.post(
   '/',
+  authenticate,
   validate({ body: createUserRequestBodySchema }),
   async (req: Request<{}, {}, CreateUserRequestBody>, res) => {
     await userController.create(req, res);
@@ -42,6 +44,7 @@ usersRouter.post(
 
 usersRouter.delete(
   '/:userId',
+  authenticate,
   validate({ params: getUserParamsSchema }),
   async (req: Request<GetUserParams>, res) => {
     await userController.delete(req, res);
