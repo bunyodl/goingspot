@@ -17,7 +17,6 @@ export const createEventRequestBodySchema = z
     type: eventTypeSchema.optional().openapi({ example: 'in-person' }),
     status: eventStatusSchema.optional().openapi({ example: 'draft' }),
     venueId: uuidV7Schema,
-    organizerId: uuidV7Schema,
     date: z.iso.datetime().openapi({ example: '2024-07-15T18:00:00.000Z' }),
     tags: z
       .array(z.string())

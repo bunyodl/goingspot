@@ -12,7 +12,6 @@ export type PatchEventParams = GetEventParams;
 
 export const patchEventRequestBodySchema = createEventRequestBodySchema
   .partial()
-  .omit({ organizerId: true })
   .openapi('PatchEventRequestBody');
 
 export type PatchEventRequestBody = z.infer<typeof patchEventRequestBodySchema>;

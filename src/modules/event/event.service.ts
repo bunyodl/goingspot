@@ -7,8 +7,12 @@ import type {
 } from '@/modules/event/schemas/endpoints/get-events.schema';
 import type { PatchEventRequestBody } from '@/modules/event/schemas/endpoints/patch-event.schema';
 import type { EventDto } from '@/modules/event/schemas/resources/event.schema';
+import { USER_ROLES } from '@/modules/user/constants/user.constants';
 
-import { NotFoundException } from '@/common/exceptions';
+import { ForbiddenException, NotFoundException } from '@/common/exceptions';
+import { exists } from '@/common/libs/exists';
+import type { AuthUser } from '@/common/types/auth-user.type';
+
 import { mapEventRowToDto } from './helpers/map-event-row';
 
 class EventService {
@@ -25,39 +29,65 @@ class EventService {
   async getById(eventId: string): Promise<GetEventResponse> {
     const eventRow = await eventRepository.getById(eventId);
 
-    if (!eventRow) {
+    if (!exists(eventRow)) {
       throw new NotFoundException('Event not found');
     }
 
     return { event: mapEventRowToDto(eventRow) };
   }
 
-  async create(body: CreateEventRequestBody): Promise<EventDto> {
-    const createdEvent = await eventRepository.create(body);
+  async create(
+    body: CreateEventRequestBody,
+    organizerId: string,
+  ): Promise<EventDto> {
+    const createdEvent = await eventRepository.create(body, organizerId);
     return mapEventRowToDto(createdEvent);
   }
 
   async patch(
     eventId: string,
     body: PatchEventRequestBody,
+    user: AuthUser,
   ): Promise<EventDto> {
+    await this.assertCanManage(eventId, user);
+
     const eventRow = await eventRepository.patch(eventId, body);
 
-    if (!eventRow) {
+    if (!exists(eventRow)) {
       throw new NotFoundException('Event not found');
     }
 
     return mapEventRowToDto(eventRow);
   }
 
-  async delete(eventId: string): Promise<EventDto> {
+  async delete(eventId: string, user: AuthUser): Promise<EventDto> {
+    await this.assertCanManage(eventId, user);
+
     const eventRow = await eventRepository.delete(eventId);
 
-    if (!eventRow) {
+    if (!exists(eventRow)) {
       throw new NotFoundException('Event not found');
     }
 
     return mapEventRowToDto(eventRow);
+  }
+
+  private async assertCanManage(
+    eventId: string,
+    user: AuthUser,
+  ): Promise<void> {
+    const eventRow = await eventRepository.getById(eventId);
+
+    if (!exists(eventRow)) {
+      throw new NotFoundException('Event not found');
+    }
+
+    const isOrganizer = eventRow.organizer_id === user.id;
+    const isAdmin = user.role === USER_ROLES.ADMIN;
+
+    if (!isOrganizer && !isAdmin) {
+      throw new ForbiddenException('You cannot manage this event');
+    }
   }
 }
 

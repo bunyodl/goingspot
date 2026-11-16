@@ -42,7 +42,7 @@ export class EventController {
     req: Request<{}, {}, CreateEventRequestBody>,
     res: Response<ApiResponse<GetEventResponse>>,
   ) {
-    const createdEvent = await eventService.create(req.body);
+    const createdEvent = await eventService.create(req.body, req.user!.id);
 
     return sendSuccess(res, {
       data: { event: createdEvent },
@@ -57,6 +57,7 @@ export class EventController {
     const updatedEvent = await eventService.patch(
       req.params.eventId,
       req.body,
+      req.user!,
     );
 
     return sendSuccess(res, { data: { updatedEvent } });
@@ -66,7 +67,10 @@ export class EventController {
     req: Request<GetEventParams>,
     res: Response<ApiResponse<DeleteEventResponse>>,
   ) {
-    const deletedEvent = await eventService.delete(req.params.eventId);
+    const deletedEvent = await eventService.delete(
+      req.params.eventId,
+      req.user!,
+    );
     return sendSuccess(res, { data: { deletedEvent } });
   }
 }

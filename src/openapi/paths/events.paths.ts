@@ -57,7 +57,6 @@ const createEventBodyExample = {
   type: 'in-person',
   status: 'draft',
   venueId: '0190f5a3-0000-7000-8000-000000000001',
-  organizerId: '0190f5a3-0000-7000-8000-000000000001',
   date: '2024-07-15T18:00:00.000Z',
   tags: ['music', 'outdoor', 'festival'],
 };
@@ -126,8 +125,10 @@ registry.registerPath({
   method: 'post',
   path: '/api/v1/events',
   summary: 'Create a new event',
-  description: 'Create a new event with the provided details',
+  description:
+    'Create a new event. organizerId is set from the authenticated user.',
   tags: ['events'],
+  security: [{ bearerAuth: [] }],
   request: {
     body: {
       content: {
@@ -162,8 +163,10 @@ registry.registerPath({
   method: 'patch',
   path: '/api/v1/events/{eventId}',
   summary: 'Patch an event',
-  description: 'Partially update an existing event with the provided fields',
+  description:
+    'Partially update an existing event. Requires organizer or platform admin.',
   tags: ['events'],
+  security: [{ bearerAuth: [] }],
   request: {
     params: patchEventParamsSchema,
     body: {
@@ -202,8 +205,10 @@ registry.registerPath({
   method: 'delete',
   path: '/api/v1/events/{eventId}',
   summary: 'Delete an event',
-  description: 'Delete an existing event by ID',
+  description:
+    'Delete an existing event by ID. Requires organizer or platform admin.',
   tags: ['events'],
+  security: [{ bearerAuth: [] }],
   request: {
     params: getEventParamsSchema,
   },

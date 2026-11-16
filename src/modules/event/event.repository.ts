@@ -77,7 +77,10 @@ class EventRepository {
     return rows[0] ?? null;
   }
 
-  async create(body: CreateEventRequestBody): Promise<EventRow> {
+  async create(
+    body: CreateEventRequestBody,
+    organizerId: string,
+  ): Promise<EventRow> {
     const query = await readSql('./queries/create-event.sql');
 
     const rows = await fetchFromDb<Array<EventRow>>(query, [
@@ -86,7 +89,7 @@ class EventRepository {
       body.type,
       body.status,
       body.venueId,
-      body.organizerId,
+      organizerId,
       body.date,
       body.tags,
     ]);
