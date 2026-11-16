@@ -11,6 +11,7 @@ services:
     volumes:
       - db_data:${DB_DATA_DIR}
       - ./src/db/migrations/001-init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+      - ./src/db/migrations/002-refresh-tokens-table.sql:/docker-entrypoint-initdb.d/002-refresh-tokens-table.sql:ro
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
       interval: 5s

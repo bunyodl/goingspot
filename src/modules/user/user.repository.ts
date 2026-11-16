@@ -84,6 +84,14 @@ class UserRepository {
     return rows[0] ?? null;
   }
 
+  async getByEmailWithPassword(email: string): Promise<UserRow | null> {
+    const query = await readSql(
+      './queries/get-user-by-email-with-password.sql',
+    );
+    const rows = await fetchFromDb<Array<UserRow>>(query, [email]);
+    return rows[0] ?? null;
+  }
+
   async create(
     body: CreateUserRequestBody,
     hashedPassword: string,

@@ -1,14 +1,28 @@
-import { hash } from 'argon2';
+import { hash, verify } from 'argon2';
+import { SignJWT } from 'jose';
+import { createHash, randomBytes } from 'node:crypto';
 
+import { authRepository } from '@/modules/auth/auth.repository';
+import type { LoginRequestBody } from '@/modules/auth/schemas/endpoints/login.schema';
 import type { RegisterRequestBody } from '@/modules/auth/schemas/endpoints/register.schema';
-import { USER_ROLES } from '@/modules/user/constants/user.constants';
+import type { AuthTokenPair } from '@/modules/auth/schemas/resources/auth-tokens.schema';
+import type { AuthSessionResult } from '@/modules/auth/types/auth-session-result.type';
+import {
+  USER_ROLES,
+  type UserRole,
+} from '@/modules/user/constants/user.constants';
 import { mapUserRowToDto } from '@/modules/user/helpers/map-user-row';
 import type { UserDto } from '@/modules/user/schemas/resources/user.schema';
 import { userRepository } from '@/modules/user/user.repository';
 
-import { ConflictException } from '@/common/exceptions';
+import { env } from '@/config/env';
+
+import { ConflictException, UnauthorizedException } from '@/common/exceptions';
+import { durationToMs } from '@/common/libs/duration-to-ms';
 
 class AuthService {
+  private readonly DUMMY_PASSWORD_HASH =
+    '$argon2id$v=19$m=65536,p=4,t=3$aT9vjxBA8VSGbOaX8SXjIA$9Hs3r5zI0ms37URrihyj5NRDDAlRrwRBDbeRPWGrrMw';
   async hash(password: string): Promise<string> {
     return await hash(password);
   }
@@ -30,6 +44,43 @@ class AuthService {
     );
 
     return mapUserRowToDto(userRow);
+  }
+
+  async login(body: LoginRequestBody): Promise<AuthSessionResult> {
+    const user = await userRepository.getByEmailWithPassword(body.email);
+
+    const passwordHash = user?.password_hash ?? this.DUMMY_PASSWORD_HASH;
+    const isPasswordValid = await verify(passwordHash, body.password);
+
+    if (!user || !isPasswordValid) {
+      throw new UnauthorizedException('Invalid login or password');
+    }
+
+    const tokens = await this.generateTokens(user.id, user.role);
+
+    return {
+      user: mapUserRowToDto(user),
+      ...tokens,
+    };
+  }
+
+  async generateTokens(userId: string, role: UserRole): Promise<AuthTokenPair> {
+    const accessToken = await new SignJWT({ role })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setSubject(userId)
+      .setIssuedAt()
+      .setExpirationTime(env.JWT_ACCESS_TOKEN_EXPIRES_IN)
+      .sign(new TextEncoder().encode(env.JWT_SECRET));
+
+    const refreshToken = randomBytes(32).toString('base64url');
+    const tokenHash = createHash('sha256').update(refreshToken).digest('hex');
+    const expiresAt = new Date(
+      Date.now() + durationToMs(env.JWT_REFRESH_TOKEN_EXPIRES_IN),
+    );
+
+    await authRepository.createRefreshToken({ userId, tokenHash, expiresAt });
+
+    return { accessToken, refreshToken };
   }
 }
 

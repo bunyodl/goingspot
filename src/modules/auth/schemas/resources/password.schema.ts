@@ -1,5 +1,11 @@
 import { z } from '@/openapi/zod-openapi';
 
+/** Login only — do not leak composition rules to attackers. */
+export const loginPasswordSchema = z
+  .string()
+  .min(8)
+  .openapi({ example: 'securePassword1' });
+
 /**
  * Strong password for register.
  * Min 8 chars, ≥1 upper, ≥1 lower, ≥1 digit, ≥1 symbol.

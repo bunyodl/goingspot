@@ -1,4 +1,8 @@
 import {
+  loginRequestBodySchema,
+  loginResponseSchema,
+} from '@/modules/auth/schemas/endpoints/login.schema';
+import {
   registerRequestBodySchema,
   registerResponseSchema,
 } from '@/modules/auth/schemas/endpoints/register.schema';
@@ -9,6 +13,11 @@ import { apiResponseSchema } from '@/openapi/schemas/shared.schema';
 const registerApiResponseSchema = apiResponseSchema(
   registerResponseSchema,
   'RegisterApiResponse',
+);
+
+const loginApiResponseSchema = apiResponseSchema(
+  loginResponseSchema,
+  'LoginApiResponse',
 );
 
 const userExample = {
@@ -22,12 +31,19 @@ const userExample = {
   updatedAt: null,
 };
 
+const accessTokenExample = 'eyJhbGciOiJIUzI1NiJ9.access.token';
+
 const registerBodyExample = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'john.doe@example.com',
   password: 'SecurePass1!',
   imageUrl: null,
+};
+
+const loginBodyExample = {
+  email: 'john.doe@example.com',
+  password: 'securePassword1',
 };
 
 registry.registerPath({
@@ -59,6 +75,45 @@ registry.registerPath({
             message: 'Success.',
             data: {
               user: userExample,
+            },
+            timestamp: 1_704_067_200_000,
+          },
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/login',
+  summary: 'Log in',
+  description:
+    'Authenticate with email and password. Returns accessToken in JSON; sets httpOnly refreshToken cookie.',
+  tags: ['auth'],
+  security: [],
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: loginRequestBodySchema,
+          example: loginBodyExample,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Authenticated (Set-Cookie: refreshToken)',
+      content: {
+        'application/json': {
+          schema: loginApiResponseSchema,
+          example: {
+            code: 200,
+            message: 'Success.',
+            data: {
+              user: userExample,
+              accessToken: accessTokenExample,
             },
             timestamp: 1_704_067_200_000,
           },
