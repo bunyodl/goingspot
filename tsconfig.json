@@ -15,7 +15,6 @@
     "lib": ["ES2022"],
 
     // Path Aliases
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./src/*"]

@@ -1,18 +1,17 @@
 # Stage 1: Build the Application
-# We use node:24.3 as the base for building and installing dependencies.
-FROM node:24.3 AS build
+# Slim is enough: argon2 ships glibc prebuilds, so the full image is unused weight.
+FROM node:26.13.1-slim AS build
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json first to leverage Docker caching.
-# If these files don't change, subsequent builds can skip 'npm install'.
+# If these files don't change, subsequent builds can skip the install.
 COPY package*.json ./
 COPY tsconfig.json ./
 
-# Install dependencies including TypeScript
-RUN npm install
-RUN npm install --save-dev typescript @types/node
+# Install the lockfile exactly. npm ci fails if package.json and the lock disagree.
+RUN npm ci
 
 # Copy the rest of the application source code
 COPY . .
@@ -21,15 +20,14 @@ COPY . .
 RUN npm run build || npx tsc
 
 # Stage 2: Create the Final Production Image
-# We use node:24.3-slim as a minimal runtime image.
-FROM node:24.3-slim
+FROM node:26.13.1-slim
 
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Copy only production dependencies
 COPY --from=build /usr/src/app/package*.json ./
-RUN npm install --only=production
+RUN npm ci --omit=dev
 
 # Copy the built application files from the 'build' stage
 COPY --from=build /usr/src/app/dist ./dist
