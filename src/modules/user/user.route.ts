@@ -15,7 +15,10 @@ import {
   type GetUserParams,
   getUserParamsSchema,
 } from './schemas/endpoints/get-user.schema';
-import { getUsersQuerySchema } from './schemas/endpoints/get-users.schema';
+import {
+  type GetUsersQuery,
+  getUsersQuerySchema,
+} from './schemas/endpoints/get-users.schema';
 
 export const usersRouter = express.Router();
 
@@ -29,7 +32,10 @@ usersRouter.get(
   ...requireAdmin,
   validate({ query: getUsersQuerySchema }),
   async (req, res) => {
-    await userController.getMany(req, res);
+    await userController.getMany(
+      req as unknown as Request<{}, {}, {}, GetUsersQuery>,
+      res,
+    );
   },
 );
 

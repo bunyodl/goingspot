@@ -1,21 +1,10 @@
 import { userSchema } from '@/modules/user/schemas/resources/user.schema';
 
+import { paginationQuerySchema } from '@/openapi/schemas/pagination.schema';
 import { z } from '@/openapi/zod-openapi';
 
 export const getUsersQuerySchema = z
   .object({
-    page: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 1, description: 'Page number for pagination' }),
-    limit: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 10, description: 'Number of items per page' }),
     search: z.string().optional().openapi({
       description:
         'Search term to filter users by first name, last name, or email',
@@ -29,6 +18,7 @@ export const getUsersQuerySchema = z
       .optional()
       .openapi({ example: 'firstName', description: 'Field to sort by' }),
   })
+  .extend(paginationQuerySchema.shape)
   .openapi('GetUsersQuery');
 
 export type GetUsersQuery = z.infer<typeof getUsersQuerySchema>;

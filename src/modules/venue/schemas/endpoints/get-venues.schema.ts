@@ -1,21 +1,10 @@
 import { venueSchema } from '@/modules/venue/schemas/resources/venue.schema';
 
+import { paginationQuerySchema } from '@/openapi/schemas/pagination.schema';
 import { z } from '@/openapi/zod-openapi';
 
 export const getVenuesQuerySchema = z
   .object({
-    page: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 1, description: 'Page number for pagination' }),
-    limit: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 10, description: 'Number of items per page' }),
     search: z.string().optional().openapi({
       example: 'convention center',
       description: 'Search term to filter venues by name or location',
@@ -29,6 +18,7 @@ export const getVenuesQuerySchema = z
       .optional()
       .openapi({ example: 'capacity', description: 'Field to sort by' }),
   })
+  .extend(paginationQuerySchema.shape)
   .openapi('GetVenuesQuery');
 
 export type GetVenuesQuery = z.infer<typeof getVenuesQuerySchema>;

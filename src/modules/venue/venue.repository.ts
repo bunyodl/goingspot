@@ -42,13 +42,10 @@ class VenueRepository {
         `;
     }
 
+    const { limit, offset } = params;
     const queryParams = params.search
-      ? [
-          `%${params.search}%`,
-          params.limit ?? 10,
-          ((params.page ?? 1) - 1) * (params.limit ?? 10),
-        ]
-      : [params.limit ?? 10, ((params.page ?? 1) - 1) * (params.limit ?? 10)];
+      ? [`%${params.search}%`, limit, offset]
+      : [limit, offset];
 
     return fetchFromDb<Array<VenueRow>>(query, queryParams);
   }

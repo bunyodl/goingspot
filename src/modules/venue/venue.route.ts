@@ -13,7 +13,10 @@ import {
   type GetVenueParams,
   getVenueParamsSchema,
 } from './schemas/endpoints/get-venue.schema';
-import { getVenuesQuerySchema } from './schemas/endpoints/get-venues.schema';
+import {
+  type GetVenuesQuery,
+  getVenuesQuerySchema,
+} from './schemas/endpoints/get-venues.schema';
 import {
   type PatchVenueParams,
   type PatchVenueRequestBody,
@@ -27,7 +30,10 @@ venuesRouter.get(
   '/',
   validate({ query: getVenuesQuerySchema }),
   async (req, res) => {
-    await venueController.getMany(req, res);
+    await venueController.getMany(
+      req as unknown as Request<{}, {}, {}, GetVenuesQuery>,
+      res,
+    );
   },
 );
 
