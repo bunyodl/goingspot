@@ -1,3 +1,4 @@
+import { getMeResponseSchema } from '@/modules/auth/schemas/endpoints/get-me.schema';
 import {
   loginRequestBodySchema,
   loginResponseSchema,
@@ -11,6 +12,11 @@ import {
 
 import { registry } from '@/openapi/registry-instance';
 import { apiResponseSchema } from '@/openapi/schemas/shared.schema';
+
+const getMeApiResponseSchema = apiResponseSchema(
+  getMeResponseSchema,
+  'GetMeApiResponse',
+);
 
 const registerApiResponseSchema = apiResponseSchema(
   registerResponseSchema,
@@ -57,6 +63,34 @@ const loginBodyExample = {
   email: 'john.doe@example.com',
   password: 'securePassword1',
 };
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/v1/auth/me',
+  summary: 'Get the current user',
+  description:
+    'Return the authenticated user profile. Requires a Bearer access token.',
+  tags: ['auth'],
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: 'Current user',
+      content: {
+        'application/json': {
+          schema: getMeApiResponseSchema,
+          example: {
+            code: 200,
+            message: 'Success.',
+            data: {
+              user: userExample,
+            },
+            timestamp: 1_704_067_200_000,
+          },
+        },
+      },
+    },
+  },
+});
 
 registry.registerPath({
   method: 'post',
@@ -124,7 +158,6 @@ registry.registerPath({
             code: 200,
             message: 'Success.',
             data: {
-              user: userExample,
               accessToken: accessTokenExample,
             },
             timestamp: 1_704_067_200_000,

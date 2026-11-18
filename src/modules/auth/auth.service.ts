@@ -7,7 +7,6 @@ import type { LoginRequestBody } from '@/modules/auth/schemas/endpoints/login.sc
 import type { LogoutResponse } from '@/modules/auth/schemas/endpoints/logout.schema';
 import type { RegisterRequestBody } from '@/modules/auth/schemas/endpoints/register.schema';
 import type { AuthTokenPair } from '@/modules/auth/schemas/resources/auth-tokens.schema';
-import type { AuthSessionResult } from '@/modules/auth/types/auth-session-result.type';
 import {
   USER_ROLES,
   type UserRole,
@@ -49,7 +48,7 @@ class AuthService {
     return mapUserRowToDto(userRow);
   }
 
-  async login(body: LoginRequestBody): Promise<AuthSessionResult> {
+  async login(body: LoginRequestBody): Promise<AuthTokenPair> {
     const user = await userRepository.getByEmailWithPassword(body.email);
 
     const passwordHash = user?.password_hash ?? this.DUMMY_PASSWORD_HASH;
@@ -59,12 +58,7 @@ class AuthService {
       throw new UnauthorizedException('Invalid login or password');
     }
 
-    const tokens = await this.generateTokens(user.id, user.role);
-
-    return {
-      user: mapUserRowToDto(user),
-      ...tokens,
-    };
+    return await this.generateTokens(user.id, user.role);
   }
 
   async refresh(refreshToken: string | undefined): Promise<AuthTokenPair> {
@@ -102,6 +96,16 @@ class AuthService {
     await authRepository.revokeByTokenHash(tokenHash);
 
     return { loggedOut: true };
+  }
+
+  async getMe(userId: string): Promise<UserDto> {
+    const user = await userRepository.getById(userId);
+
+    if (!exists(user)) {
+      throw new UnauthorizedException('Invalid access token');
+    }
+
+    return mapUserRowToDto(user);
   }
 
   async generateTokens(userId: string, role: UserRole): Promise<AuthTokenPair> {

@@ -1,6 +1,8 @@
-import { accessTokenSchema } from '@/modules/auth/schemas/resources/auth-tokens.schema';
+import {
+  type AccessTokenDto,
+  accessTokenSchema,
+} from '@/modules/auth/schemas/resources/auth-tokens.schema';
 import { loginPasswordSchema } from '@/modules/auth/schemas/resources/password.schema';
-import { userSchema } from '@/modules/user/schemas/resources/user.schema';
 
 import { z } from '@/openapi/zod-openapi';
 
@@ -13,11 +15,7 @@ export const loginRequestBodySchema = z
 
 export type LoginRequestBody = z.infer<typeof loginRequestBodySchema>;
 
-export const loginResponseSchema = z
-  .object({
-    user: userSchema,
-  })
-  .extend(accessTokenSchema.shape)
-  .openapi('LoginResponse');
+/** Same JSON shape as AccessToken — refresh cookie is not in the body. */
+export const loginResponseSchema = accessTokenSchema.openapi('LoginResponse');
 
-export type LoginResponse = z.infer<typeof loginResponseSchema>;
+export type LoginResponse = AccessTokenDto;

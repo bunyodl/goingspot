@@ -6,6 +6,7 @@ import {
   getClearRefreshCookieOptions,
   getRefreshCookieOptions,
 } from '@/modules/auth/constants/auth.constants';
+import type { GetMeResponse } from '@/modules/auth/schemas/endpoints/get-me.schema';
 import type {
   LoginRequestBody,
   LoginResponse,
@@ -38,18 +39,17 @@ export class AuthController {
     req: Request<{}, {}, LoginRequestBody>,
     res: Response<ApiResponse<LoginResponse>>,
   ) {
-    const session = await authService.login(req.body);
+    const tokens = await authService.login(req.body);
 
     res.cookie(
       AUTH_REFRESH_COOKIE,
-      session.refreshToken,
+      tokens.refreshToken,
       getRefreshCookieOptions(),
     );
 
     return sendSuccess(res, {
       data: {
-        user: session.user,
-        accessToken: session.accessToken,
+        accessToken: tokens.accessToken,
       },
     });
   }
@@ -80,6 +80,12 @@ export class AuthController {
     res.clearCookie(AUTH_REFRESH_COOKIE, getClearRefreshCookieOptions());
 
     return sendSuccess(res, { data });
+  }
+
+  async getMe(req: Request, res: Response<ApiResponse<GetMeResponse>>) {
+    const user = await authService.getMe(req.user!.id);
+
+    return sendSuccess(res, { data: { user } });
   }
 }
 

@@ -10,9 +10,14 @@ import {
   registerRequestBodySchema,
 } from '@/modules/auth/schemas/endpoints/register.schema';
 
+import { authenticate } from '@/common/middlewares/authenticate.middleware';
 import { validate } from '@/common/middlewares/validate.middleware';
 
 export const authRouter = express.Router();
+
+authRouter.get('/me', authenticate, async (req, res) => {
+  await authController.getMe(req, res);
+});
 
 authRouter.post(
   '/register',
