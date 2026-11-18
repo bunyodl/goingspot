@@ -1,955 +1,408 @@
+import {
+  EVENT_ATTENDANCE_STATUSES,
+  EVENT_STATUSES,
+  EVENT_TYPES,
+} from '@/modules/event/constants/event.constants';
+import type { EventAttendeeDto } from '@/modules/event/helpers/map-event-attendee-row';
 import type { EventDto } from '@/modules/event/schemas/resources/event.schema';
+import {
+  USER_ROLES,
+  type UserRole,
+} from '@/modules/user/constants/user.constants';
 import type { UserDto } from '@/modules/user/schemas/resources/user.schema';
 import type { VenueDto } from '@/modules/venue/schemas/resources/venue.schema';
 
-export const users: UserDto[] = [
-  {
-    id: '0190f5a3-0000-7000-8000-000000000001',
-    firstName: 'Alice',
-    lastName: 'User',
-    email: 'alice@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000002',
-    firstName: 'Bob',
-    lastName: 'User',
-    email: 'bob@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000003',
-    firstName: 'Carlos',
-    lastName: 'User',
-    email: 'carlos@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000004',
-    firstName: 'Diana',
-    lastName: 'User',
-    email: 'diana@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000005',
-    firstName: 'Ethan',
-    lastName: 'User',
-    email: 'ethan@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000006',
-    firstName: 'Fatima',
-    lastName: 'User',
-    email: 'fatima@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000007',
-    firstName: 'George',
-    lastName: 'User',
-    email: 'george@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000008',
-    firstName: 'Hiro',
-    lastName: 'User',
-    email: 'hiro@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000009',
-    firstName: 'Isabella',
-    lastName: 'User',
-    email: 'isabella@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000010',
-    firstName: 'Jack',
-    lastName: 'User',
-    email: 'jack@example.com',
-    imageUrl: null,
-    role: 'admin',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000011',
-    firstName: 'Liam',
-    lastName: 'User',
-    email: 'liam@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000012',
-    firstName: 'Mia',
-    lastName: 'User',
-    email: 'mia@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000013',
-    firstName: 'Noah',
-    lastName: 'User',
-    email: 'noah@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000014',
-    firstName: 'Olivia',
-    lastName: 'User',
-    email: 'olivia@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000015',
-    firstName: 'Paul',
-    lastName: 'User',
-    email: 'paul@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000016',
-    firstName: 'Quinn',
-    lastName: 'User',
-    email: 'quinn@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000017',
-    firstName: 'Rita',
-    lastName: 'User',
-    email: 'rita@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000018',
-    firstName: 'Sam',
-    lastName: 'User',
-    email: 'sam@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000019',
-    firstName: 'Tina',
-    lastName: 'User',
-    email: 'tina@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000020',
-    firstName: 'Uma',
-    lastName: 'User',
-    email: 'uma@example.com',
-    imageUrl: null,
-    role: 'user',
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-];
+const FIRST_NAMES = [
+  'Alice',
+  'Bob',
+  'Carlos',
+  'Diana',
+  'Ethan',
+  'Fatima',
+  'George',
+  'Hiro',
+  'Isabella',
+  'Jack',
+  'Liam',
+  'Mia',
+  'Noah',
+  'Olivia',
+  'Paul',
+  'Quinn',
+  'Rita',
+  'Sam',
+  'Tina',
+  'Uma',
+  'Victor',
+  'Wendy',
+  'Xavier',
+  'Yara',
+  'Zane',
+] as const;
 
-export const venues: VenueDto[] = [
+const LAST_NAMES = [
+  'Nguyen',
+  'Patel',
+  'Garcia',
+  'Kim',
+  'Johnson',
+  'Silva',
+  'Andersen',
+  'Kowalski',
+  'Ivanov',
+  'Brown',
+  'Chen',
+  'Rossi',
+  'Müller',
+  'Sato',
+  'Ali',
+] as const;
+
+const VENUE_DEFS = [
   {
-    id: '0190f5a3-0000-7000-8000-000000000001',
     name: 'Main Hall SF',
     location: 'San Francisco, USA',
     timezone: 'America/Los_Angeles',
     capacity: 300,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000002',
     name: 'Berlin Tech Arena',
     location: 'Berlin, Germany',
     timezone: 'Europe/Berlin',
     capacity: 500,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000003',
     name: 'Online - Zoom',
     location: 'Virtual, Global',
     timezone: 'UTC',
     capacity: 1000,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000004',
     name: 'Tokyo Dev Hub',
     location: 'Tokyo, Japan',
     timezone: 'Asia/Tokyo',
     capacity: 250,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000005',
     name: 'Frunze Stadium',
     location: 'Dushanbe, Tajikistan',
     timezone: 'Asia/Dushanbe',
     capacity: 400,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000006',
     name: 'Paris Startup Studio',
     location: 'Paris, France',
     timezone: 'Europe/Paris',
     capacity: 150,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000007',
     name: 'London CodeBase',
     location: 'London, UK',
     timezone: 'Europe/London',
     capacity: 350,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000008',
     name: 'Dubai Tech Center',
     location: 'Dubai, UAE',
-    timezone: 'UTC',
+    timezone: 'Asia/Dubai',
     capacity: 200,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000009',
     name: 'São Paulo Campus',
     location: 'São Paulo, Brazil',
     timezone: 'America/Sao_Paulo',
     capacity: 300,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
   {
-    id: '0190f5a3-0000-7000-8000-000000000010',
     name: 'Melbourne Digital Arena',
     location: 'Melbourne, Australia',
     timezone: 'Australia/Sydney',
     capacity: 250,
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
   },
-];
+  {
+    name: 'Seoul Maker Space',
+    location: 'Seoul, South Korea',
+    timezone: 'Asia/Seoul',
+    capacity: 180,
+  },
+  {
+    name: 'Toronto Hub',
+    location: 'Toronto, Canada',
+    timezone: 'America/Toronto',
+    capacity: 220,
+  },
+  {
+    name: 'Amsterdam Dock',
+    location: 'Amsterdam, Netherlands',
+    timezone: 'Europe/Amsterdam',
+    capacity: 160,
+  },
+  {
+    name: 'Lisbon Loft',
+    location: 'Lisbon, Portugal',
+    timezone: 'Europe/Lisbon',
+    capacity: 120,
+  },
+  {
+    name: 'Warsaw Arena',
+    location: 'Warsaw, Poland',
+    timezone: 'Europe/Warsaw',
+    capacity: 280,
+  },
+  {
+    name: 'Nairobi Innovation Lab',
+    location: 'Nairobi, Kenya',
+    timezone: 'Africa/Nairobi',
+    capacity: 140,
+  },
+  {
+    name: 'Mexico City Forum',
+    location: 'Mexico City, Mexico',
+    timezone: 'America/Mexico_City',
+    capacity: 260,
+  },
+  {
+    name: 'Stockholm Studio',
+    location: 'Stockholm, Sweden',
+    timezone: 'Europe/Stockholm',
+    capacity: 130,
+  },
+] as const;
 
-export const events: EventDto[] = [
-  {
-    id: '0190f5a3-0000-7000-8000-000000000001',
-    title: 'React Meetup 2025',
-    description: 'A session on react meetup with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000002',
-    organizerId: '0190f5a3-0000-7000-8000-000000000002',
-    date: '2025-09-03T00:00:00.000Z',
-    tags: ['react', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
+const EVENT_TITLE_SEEDS = [
+  ['React Meetup', ['react', 'frontend']],
+  ['Vue.js Europe', ['vue', 'frontend']],
+  ['Docker Deep Dive', ['docker', 'devops']],
+  ['Python for Data Science', ['python', 'data']],
+  ['Next.js SEO Workshop', ['nextjs', 'seo']],
+  ['AI Startups Demo Day', ['ai', 'startups']],
+  ['Security Best Practices', ['security', 'web']],
+  ['Cloudflare & Edge Computing', ['cloudflare', 'edge']],
+  ['GraphQL vs REST', ['graphql', 'rest', 'api']],
+  ['Kubernetes Crash Course', ['kubernetes', 'devops']],
+  ['Rust Game Dev', ['rust', 'game']],
+  ['Firebase & Firestore', ['firebase', 'backend']],
+  ['SvelteConf', ['svelte', 'frontend']],
+  ['Web3 Summit', ['web3', 'blockchain']],
+  ['PostgreSQL Performance', ['postgresql', 'database']],
+  ['Deno for Beginners', ['deno', 'javascript']],
+  ['Machine Learning Bootcamp', ['ml', 'ai']],
+  ['Flutter Mobile Fest', ['flutter', 'mobile']],
+  ['TypeScript Advanced', ['typescript', 'advanced']],
+  ['CI/CD Pipelines Workshop', ['ci', 'cd', 'devops']],
+  ['Node.js Internals', ['nodejs', 'backend']],
+  ['CSS Architecture', ['css', 'frontend']],
+  ['Observability 101', ['otel', 'ops']],
+  ['Product Design Critique', ['design', 'ux']],
+  ['API Gateway Patterns', ['api', 'gateway']],
+] as const;
+
+export const SEED_USER_COUNT = 220;
+export const SEED_EVENT_COUNT = 50;
+export const SEED_CREATED_AT = '2024-07-01T12:00:00.000Z';
+const FIRST_EVENT_STARTS_AT = '2025-09-03T00:00:00.000Z';
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const DAYS_BETWEEN_EVENTS = 2;
+
+export type SeedUser = UserDto & { password: string };
+export type SeedVenue = VenueDto;
+export type SeedEvent = EventDto;
+export type SeedAttendee = EventAttendeeDto;
+export type SeedCredential = Pick<UserDto, 'email' | 'role'> & {
+  password: string;
+};
+
+export function seedUuid(n: number): string {
+  return `0190f5a3-0000-7000-8000-${String(n).padStart(12, '0')}`;
+}
+
+export function seedPasswordForIndex(index: number): string {
+  return `Pass-${String(index).padStart(3, '0')}!Ab`;
+}
+
+function mulberry32(seed: number): () => number {
+  const mixer = 0x6d2b79f5;
+  const uint32Count = 2 ** 32;
+  let state = seed;
+
+  return () => {
+    const stateAsInt32 = state | 0;
+    const stateAfterMix = (stateAsInt32 + mixer) | 0;
+    state = stateAfterMix; // next call starts here; unused in this call
+
+    const shiftedBy15 = stateAfterMix >>> 15;
+    const mixedOnce = Math.imul(stateAfterMix ^ shiftedBy15, 1 | stateAfterMix);
+
+    const shiftedBy7 = mixedOnce >>> 7;
+    const mixedTwice =
+      (mixedOnce + Math.imul(mixedOnce ^ shiftedBy7, 61 | mixedOnce)) ^
+      mixedOnce;
+
+    const shiftedBy14 = mixedTwice >>> 14;
+    const unsignedBits = (mixedTwice ^ shiftedBy14) >>> 0;
+
+    return unsignedBits / uint32Count;
+  };
+}
+
+function pickRole(index: number): UserRole {
+  if (index <= 3) {
+    return USER_ROLES.ADMIN;
+  }
+  return USER_ROLES.USER;
+}
+
+export function buildSeedUsers(): SeedUser[] {
+  const users: SeedUser[] = [];
+
+  for (let index = 1; index <= SEED_USER_COUNT; index += 1) {
+    const firstName = FIRST_NAMES[(index - 1) % FIRST_NAMES.length]!;
+    const lastName =
+      LAST_NAMES[
+        Math.floor((index - 1) / FIRST_NAMES.length) % LAST_NAMES.length
+      ]!;
+    const email =
+      index === 1
+        ? 'alice@example.com'
+        : index === 2
+          ? 'bob@example.com'
+          : `${firstName.toLowerCase()}.${lastName.toLowerCase()}.${String(index).padStart(3, '0')}@example.com`;
+
+    users.push({
+      id: seedUuid(index),
+      firstName: index === 1 ? 'Alice' : firstName,
+      lastName: index === 1 ? 'Admin' : lastName,
+      email,
+      imageUrl: null,
+      role: pickRole(index),
+      password: seedPasswordForIndex(index),
+      createdAt: SEED_CREATED_AT,
+      updatedAt: null,
+    });
+  }
+
+  return users;
+}
+
+export function buildSeedVenues(): SeedVenue[] {
+  return VENUE_DEFS.map((venue, index) => ({
+    id: seedUuid(index + 1),
+    name: venue.name,
+    location: venue.location,
+    timezone: venue.timezone,
+    capacity: venue.capacity,
+    createdAt: SEED_CREATED_AT,
     updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000002',
-    title: 'Vue.js Europe 2025',
-    description: 'A session on vue.js europe with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000003',
-    organizerId: '0190f5a3-0000-7000-8000-000000000003',
-    date: '2025-09-05T00:00:00.000Z',
-    tags: ['vue', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000003',
-    title: 'Docker Deep Dive 2025',
-    description: 'A session on docker deep dive with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000004',
-    organizerId: '0190f5a3-0000-7000-8000-000000000004',
-    date: '2025-09-07T00:00:00.000Z',
-    tags: ['docker', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000004',
-    title: 'Python for Data Science 2025',
-    description: 'A session on python for data science with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000005',
-    organizerId: '0190f5a3-0000-7000-8000-000000000005',
-    date: '2025-09-09T00:00:00.000Z',
-    tags: ['python', 'data'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000005',
-    title: 'Next.js SEO Workshop 2025',
-    description: 'A session on next.js seo workshop with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000006',
-    organizerId: '0190f5a3-0000-7000-8000-000000000006',
-    date: '2025-09-11T00:00:00.000Z',
-    tags: ['nextjs', 'seo'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000006',
-    title: 'AI Startups Demo Day 2025',
-    description: 'A session on ai startups demo day with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000007',
-    organizerId: '0190f5a3-0000-7000-8000-000000000007',
-    date: '2025-09-13T00:00:00.000Z',
-    tags: ['ai', 'startups'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000007',
-    title: 'Security Best Practices 2025',
-    description: 'A session on security best practices with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000008',
-    organizerId: '0190f5a3-0000-7000-8000-000000000008',
-    date: '2025-09-15T00:00:00.000Z',
-    tags: ['security', 'web'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000008',
-    title: 'Cloudflare & Edge Computing 2025',
-    description:
-      'A session on cloudflare & edge computing with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000009',
-    organizerId: '0190f5a3-0000-7000-8000-000000000009',
-    date: '2025-09-17T00:00:00.000Z',
-    tags: ['cloudflare', 'edge'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000009',
-    title: 'GraphQL vs REST 2025',
-    description: 'A session on graphql vs rest with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000010',
-    organizerId: '0190f5a3-0000-7000-8000-000000000010',
-    date: '2025-09-19T00:00:00.000Z',
-    tags: ['graphql', 'rest', 'api'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000010',
-    title: 'Kubernetes Crash Course 2025',
-    description: 'A session on kubernetes crash course with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000001',
-    organizerId: '0190f5a3-0000-7000-8000-000000000001',
-    date: '2025-09-21T00:00:00.000Z',
-    tags: ['kubernetes', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000011',
-    title: 'Rust Game Dev 2025',
-    description: 'A session on rust game dev with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000002',
-    organizerId: '0190f5a3-0000-7000-8000-000000000002',
-    date: '2025-09-23T00:00:00.000Z',
-    tags: ['rust', 'game'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000012',
-    title: 'Firebase & Firestore 2025',
-    description: 'A session on firebase & firestore with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000003',
-    organizerId: '0190f5a3-0000-7000-8000-000000000003',
-    date: '2025-09-25T00:00:00.000Z',
-    tags: ['firebase', 'backend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000013',
-    title: 'SvelteConf 2025',
-    description: 'A session on svelteconf with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000004',
-    organizerId: '0190f5a3-0000-7000-8000-000000000004',
-    date: '2025-09-27T00:00:00.000Z',
-    tags: ['svelte', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000014',
-    title: 'Web3 Summit 2025',
-    description: 'A session on web3 summit with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000005',
-    organizerId: '0190f5a3-0000-7000-8000-000000000005',
-    date: '2025-09-29T00:00:00.000Z',
-    tags: ['web3', 'blockchain'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000015',
-    title: 'PostgreSQL Performance 2025',
-    description: 'A session on postgresql performance with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000006',
-    organizerId: '0190f5a3-0000-7000-8000-000000000006',
-    date: '2025-10-01T00:00:00.000Z',
-    tags: ['postgresql', 'database'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000016',
-    title: 'Deno for Beginners 2025',
-    description: 'A session on deno for beginners with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000007',
-    organizerId: '0190f5a3-0000-7000-8000-000000000007',
-    date: '2025-10-03T00:00:00.000Z',
-    tags: ['deno', 'javascript'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000017',
-    title: 'Machine Learning Bootcamp 2025',
-    description: 'A session on machine learning bootcamp with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000008',
-    organizerId: '0190f5a3-0000-7000-8000-000000000008',
-    date: '2025-10-05T00:00:00.000Z',
-    tags: ['ml', 'ai'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000018',
-    title: 'Flutter Mobile Fest 2025',
-    description: 'A session on flutter mobile fest with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000009',
-    organizerId: '0190f5a3-0000-7000-8000-000000000009',
-    date: '2025-10-07T00:00:00.000Z',
-    tags: ['flutter', 'mobile'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000019',
-    title: 'TypeScript Advanced 2025',
-    description: 'A session on typescript advanced with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000010',
-    organizerId: '0190f5a3-0000-7000-8000-000000000010',
-    date: '2025-10-09T00:00:00.000Z',
-    tags: ['typescript', 'advanced'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000020',
-    title: 'CI/CD Pipelines Workshop 2026',
-    description: 'A session on ci/cd pipelines workshop with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000001',
-    organizerId: '0190f5a3-0000-7000-8000-000000000001',
-    date: '2025-10-11T00:00:00.000Z',
-    tags: ['ci', 'cd', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000021',
-    title: 'React Meetup 2026',
-    description: 'A session on react meetup with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000002',
-    organizerId: '0190f5a3-0000-7000-8000-000000000002',
-    date: '2025-10-13T00:00:00.000Z',
-    tags: ['react', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000022',
-    title: 'Vue.js Europe 2026',
-    description: 'A session on vue.js europe with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000003',
-    organizerId: '0190f5a3-0000-7000-8000-000000000003',
-    date: '2025-10-15T00:00:00.000Z',
-    tags: ['vue', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000023',
-    title: 'Docker Deep Dive 2026',
-    description: 'A session on docker deep dive with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000004',
-    organizerId: '0190f5a3-0000-7000-8000-000000000004',
-    date: '2025-10-17T00:00:00.000Z',
-    tags: ['docker', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000024',
-    title: 'Python for Data Science 2026',
-    description: 'A session on python for data science with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000005',
-    organizerId: '0190f5a3-0000-7000-8000-000000000005',
-    date: '2025-10-19T00:00:00.000Z',
-    tags: ['python', 'data'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000025',
-    title: 'Next.js SEO Workshop 2026',
-    description: 'A session on next.js seo workshop with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000006',
-    organizerId: '0190f5a3-0000-7000-8000-000000000006',
-    date: '2025-10-21T00:00:00.000Z',
-    tags: ['nextjs', 'seo'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000026',
-    title: 'AI Startups Demo Day 2026',
-    description: 'A session on ai startups demo day with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000007',
-    organizerId: '0190f5a3-0000-7000-8000-000000000007',
-    date: '2025-10-23T00:00:00.000Z',
-    tags: ['ai', 'startups'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000027',
-    title: 'Security Best Practices 2026',
-    description: 'A session on security best practices with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000008',
-    organizerId: '0190f5a3-0000-7000-8000-000000000008',
-    date: '2025-10-25T00:00:00.000Z',
-    tags: ['security', 'web'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000028',
-    title: 'Cloudflare & Edge Computing 2026',
-    description:
-      'A session on cloudflare & edge computing with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000009',
-    organizerId: '0190f5a3-0000-7000-8000-000000000009',
-    date: '2025-10-27T00:00:00.000Z',
-    tags: ['cloudflare', 'edge'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000029',
-    title: 'GraphQL vs REST 2026',
-    description: 'A session on graphql vs rest with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000010',
-    organizerId: '0190f5a3-0000-7000-8000-000000000010',
-    date: '2025-10-29T00:00:00.000Z',
-    tags: ['graphql', 'rest', 'api'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000030',
-    title: 'Kubernetes Crash Course 2026',
-    description: 'A session on kubernetes crash course with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000001',
-    organizerId: '0190f5a3-0000-7000-8000-000000000001',
-    date: '2025-10-31T00:00:00.000Z',
-    tags: ['kubernetes', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000031',
-    title: 'Rust Game Dev 2026',
-    description: 'A session on rust game dev with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000002',
-    organizerId: '0190f5a3-0000-7000-8000-000000000002',
-    date: '2025-11-02T00:00:00.000Z',
-    tags: ['rust', 'game'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000032',
-    title: 'Firebase & Firestore 2026',
-    description: 'A session on firebase & firestore with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000003',
-    organizerId: '0190f5a3-0000-7000-8000-000000000003',
-    date: '2025-11-04T00:00:00.000Z',
-    tags: ['firebase', 'backend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000033',
-    title: 'SvelteConf 2026',
-    description: 'A session on svelteconf with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000004',
-    organizerId: '0190f5a3-0000-7000-8000-000000000004',
-    date: '2025-11-06T00:00:00.000Z',
-    tags: ['svelte', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000034',
-    title: 'Web3 Summit 2026',
-    description: 'A session on web3 summit with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000005',
-    organizerId: '0190f5a3-0000-7000-8000-000000000005',
-    date: '2025-11-08T00:00:00.000Z',
-    tags: ['web3', 'blockchain'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000035',
-    title: 'PostgreSQL Performance 2026',
-    description: 'A session on postgresql performance with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000006',
-    organizerId: '0190f5a3-0000-7000-8000-000000000006',
-    date: '2025-11-10T00:00:00.000Z',
-    tags: ['postgresql', 'database'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000036',
-    title: 'Deno for Beginners 2026',
-    description: 'A session on deno for beginners with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000007',
-    organizerId: '0190f5a3-0000-7000-8000-000000000007',
-    date: '2025-11-12T00:00:00.000Z',
-    tags: ['deno', 'javascript'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000037',
-    title: 'Machine Learning Bootcamp 2026',
-    description: 'A session on machine learning bootcamp with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000008',
-    organizerId: '0190f5a3-0000-7000-8000-000000000008',
-    date: '2025-11-14T00:00:00.000Z',
-    tags: ['ml', 'ai'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000038',
-    title: 'Flutter Mobile Fest 2026',
-    description: 'A session on flutter mobile fest with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000009',
-    organizerId: '0190f5a3-0000-7000-8000-000000000009',
-    date: '2025-11-16T00:00:00.000Z',
-    tags: ['flutter', 'mobile'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000039',
-    title: 'TypeScript Advanced 2026',
-    description: 'A session on typescript advanced with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000010',
-    organizerId: '0190f5a3-0000-7000-8000-000000000010',
-    date: '2025-11-18T00:00:00.000Z',
-    tags: ['typescript', 'advanced'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000040',
-    title: 'CI/CD Pipelines Workshop 2027',
-    description: 'A session on ci/cd pipelines workshop with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000001',
-    organizerId: '0190f5a3-0000-7000-8000-000000000001',
-    date: '2025-11-20T00:00:00.000Z',
-    tags: ['ci', 'cd', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000041',
-    title: 'React Meetup 2027',
-    description: 'A session on react meetup with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000002',
-    organizerId: '0190f5a3-0000-7000-8000-000000000002',
-    date: '2025-11-22T00:00:00.000Z',
-    tags: ['react', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000042',
-    title: 'Vue.js Europe 2027',
-    description: 'A session on vue.js europe with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000003',
-    organizerId: '0190f5a3-0000-7000-8000-000000000003',
-    date: '2025-11-24T00:00:00.000Z',
-    tags: ['vue', 'frontend'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000043',
-    title: 'Docker Deep Dive 2027',
-    description: 'A session on docker deep dive with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000004',
-    organizerId: '0190f5a3-0000-7000-8000-000000000004',
-    date: '2025-11-26T00:00:00.000Z',
-    tags: ['docker', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000044',
-    title: 'Python for Data Science 2027',
-    description: 'A session on python for data science with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000005',
-    organizerId: '0190f5a3-0000-7000-8000-000000000005',
-    date: '2025-11-28T00:00:00.000Z',
-    tags: ['python', 'data'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000045',
-    title: 'Next.js SEO Workshop 2027',
-    description: 'A session on next.js seo workshop with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000006',
-    organizerId: '0190f5a3-0000-7000-8000-000000000006',
-    date: '2025-11-30T00:00:00.000Z',
-    tags: ['nextjs', 'seo'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000046',
-    title: 'AI Startups Demo Day 2027',
-    description: 'A session on ai startups demo day with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000007',
-    organizerId: '0190f5a3-0000-7000-8000-000000000007',
-    date: '2025-12-02T00:00:00.000Z',
-    tags: ['ai', 'startups'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000047',
-    title: 'Security Best Practices 2027',
-    description: 'A session on security best practices with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000008',
-    organizerId: '0190f5a3-0000-7000-8000-000000000008',
-    date: '2025-12-04T00:00:00.000Z',
-    tags: ['security', 'web'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000048',
-    title: 'Cloudflare & Edge Computing 2027',
-    description:
-      'A session on cloudflare & edge computing with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000009',
-    organizerId: '0190f5a3-0000-7000-8000-000000000009',
-    date: '2025-12-06T00:00:00.000Z',
-    tags: ['cloudflare', 'edge'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000049',
-    title: 'GraphQL vs REST 2027',
-    description: 'A session on graphql vs rest with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000010',
-    organizerId: '0190f5a3-0000-7000-8000-000000000010',
-    date: '2025-12-08T00:00:00.000Z',
-    tags: ['graphql', 'rest', 'api'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-  {
-    id: '0190f5a3-0000-7000-8000-000000000050',
-    title: 'Kubernetes Crash Course 2027',
-    description: 'A session on kubernetes crash course with expert speakers.',
-    type: 'in-person',
-    status: 'published',
-    venueId: '0190f5a3-0000-7000-8000-000000000001',
-    organizerId: '0190f5a3-0000-7000-8000-000000000001',
-    date: '2025-12-10T00:00:00.000Z',
-    tags: ['kubernetes', 'devops'],
-    createdAt: '2024-07-01T12:00:00.000Z',
-    updatedAt: null,
-  },
-];
+  }));
+}
+
+export function buildSeedEvents(
+  users: SeedUser[],
+  venues: SeedVenue[],
+): SeedEvent[] {
+  const events: SeedEvent[] = [];
+  const organizerPool = users.filter((user) => user.role === USER_ROLES.USER);
+  const firstEventStartsAtMs = Date.parse(FIRST_EVENT_STARTS_AT);
+  const eventSpacingMs = DAYS_BETWEEN_EVENTS * MS_PER_DAY;
+  const random = mulberry32(7);
+  const emptyGoingChance = 0.2;
+
+  for (let index = 0; index < SEED_EVENT_COUNT; index += 1) {
+    const [titleBase, tags] =
+      EVENT_TITLE_SEEDS[index % EVENT_TITLE_SEEDS.length]!;
+    const yearSuffix = 2025 + Math.floor(index / EVENT_TITLE_SEEDS.length);
+    const venue = venues[index % venues.length]!;
+    const organizer =
+      organizerPool[index % organizerPool.length] ?? users[users.length - 1]!;
+    const eventStartsAtMs = firstEventStartsAtMs + index * eventSpacingMs;
+    const date = new Date(eventStartsAtMs).toISOString();
+    const halfCapacity = Math.floor(venue.capacity / 2);
+    const capacitySpan = venue.capacity - halfCapacity + 1;
+    const isEmptyGoing = random() < emptyGoingChance;
+    const goingCount = isEmptyGoing
+      ? 0
+      : halfCapacity + Math.floor(random() * capacitySpan);
+
+    events.push({
+      id: seedUuid(index + 1),
+      title: `${titleBase} ${yearSuffix}`,
+      description: `A session on ${titleBase.toLowerCase()} with expert speakers.`,
+      type: venue.name.startsWith('Online')
+        ? EVENT_TYPES.ONLINE
+        : EVENT_TYPES.IN_PERSON,
+      status: EVENT_STATUSES.PUBLISHED,
+      venueId: venue.id,
+      organizerId: organizer.id,
+      date,
+      tags: [...tags],
+      goingCount,
+      createdAt: SEED_CREATED_AT,
+      updatedAt: null,
+    });
+  }
+
+  return events;
+}
+
+export function buildSeedAttendees(
+  users: SeedUser[],
+  venues: SeedVenue[],
+  events: SeedEvent[],
+): SeedAttendee[] {
+  const random = mulberry32(42);
+  const venueById = new Map(venues.map((venue) => [venue.id, venue]));
+  const attendees: SeedAttendee[] = [];
+
+  for (const event of events) {
+    const venue = venueById.get(event.venueId)!;
+    const goingTarget = Math.min(
+      venue.capacity,
+      25 + Math.floor(random() * 55),
+    );
+    const interestedTarget = 20 + Math.floor(random() * 40);
+    const notGoingTarget = 10 + Math.floor(random() * 25);
+    const totalNeeded = goingTarget + interestedTarget + notGoingTarget;
+
+    const shuffled = [...users]
+      .sort(() => random() - 0.5)
+      .slice(0, totalNeeded);
+    let cursor = 0;
+
+    const pushAttendee = (
+      user: SeedUser | undefined,
+      status: SeedAttendee['status'],
+    ) => {
+      if (!user) return;
+
+      attendees.push({
+        eventId: event.id,
+        userId: user.id,
+        status,
+        createdAt: SEED_CREATED_AT,
+        updatedAt: null,
+      });
+    };
+
+    for (let i = 0; i < goingTarget; i += 1) {
+      pushAttendee(shuffled[cursor++], EVENT_ATTENDANCE_STATUSES.GOING);
+    }
+
+    for (let i = 0; i < interestedTarget; i += 1) {
+      pushAttendee(shuffled[cursor++], EVENT_ATTENDANCE_STATUSES.INTERESTED);
+    }
+
+    for (let i = 0; i < notGoingTarget; i += 1) {
+      pushAttendee(shuffled[cursor++], EVENT_ATTENDANCE_STATUSES.NOT_GOING);
+    }
+  }
+
+  return attendees;
+}
+
+export function toSeedCredentials(users: SeedUser[]): SeedCredential[] {
+  return users.map((user) => ({
+    email: user.email,
+    password: user.password,
+    role: user.role,
+  }));
+}

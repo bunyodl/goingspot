@@ -1,23 +1,36 @@
 import 'dotenv/config';
 
+import { hash } from 'argon2';
+import { writeFile } from 'node:fs/promises';
+import path from 'node:path';
+
 import { pool } from '@/db/pool';
 
-import { events, users, venues } from '@/scripts/seed.fixtures';
-
-/** Placeholder hash for local seed data only. */
-const SEED_PASSWORD_HASH =
-  '$2b$10$seededplaceholderhashnotforproductionuse1234567890';
+import {
+  buildSeedAttendees,
+  buildSeedEvents,
+  buildSeedUsers,
+  buildSeedVenues,
+  toSeedCredentials,
+} from '@/scripts/seed.fixtures';
 
 async function seed(): Promise<void> {
+  const users = buildSeedUsers();
+  const venues = buildSeedVenues();
+  const events = buildSeedEvents(users, venues);
+  const attendees = buildSeedAttendees(users, venues, events);
+
   const client = await pool.connect();
 
   try {
     await client.query('BEGIN');
     await client.query(
-      'TRUNCATE event_attendees, events, venues, users CASCADE',
+      'TRUNCATE refresh_tokens, event_attendees, events, venues, users CASCADE',
     );
 
     for (const user of users) {
+      const passwordHash = await hash(user.password);
+
       await client.query(
         `INSERT INTO users (
            id, first_name, last_name, email, image_url, role, password_hash, created_at, updated_at
@@ -30,7 +43,7 @@ async function seed(): Promise<void> {
           user.email,
           user.imageUrl,
           user.role,
-          SEED_PASSWORD_HASH,
+          passwordHash,
           user.createdAt,
           user.updatedAt,
         ],
@@ -78,10 +91,43 @@ async function seed(): Promise<void> {
       );
     }
 
+    for (const attendee of attendees) {
+      await client.query(
+        `INSERT INTO event_attendees (
+           event_id, user_id, status, created_at, updated_at
+         )
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          attendee.eventId,
+          attendee.userId,
+          attendee.status,
+          attendee.createdAt,
+          attendee.updatedAt,
+        ],
+      );
+    }
+
     await client.query('COMMIT');
 
+    const credentialsPath = path.resolve(process.cwd(), '.seed-credentials.json');
+    await writeFile(
+      credentialsPath,
+      `${JSON.stringify(toSeedCredentials(users), null, 2)}\n`,
+      'utf8',
+    );
+
+    const alice = users[0]!;
+    const sampleUser = users.find((user) => user.role === 'user')!;
+
     process.stdout.write(
-      `Seeded ${users.length} users, ${venues.length} venues, ${events.length} events\n`,
+      `Seeded ${users.length} users, ${venues.length} venues, ${events.length} events, ${attendees.length} attendees\n`,
+    );
+    process.stdout.write(`Credentials written to ${credentialsPath}\n`);
+    process.stdout.write(
+      `Demo admin: ${alice.email} / ${alice.password}\n`,
+    );
+    process.stdout.write(
+      `Demo user:  ${sampleUser.email} / ${sampleUser.password}\n`,
     );
   } catch (error) {
     await client.query('ROLLBACK');
