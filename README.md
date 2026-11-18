@@ -102,8 +102,8 @@ Requires `refresh_tokens` migration applied (`002-refresh-tokens-table.sql`).
 | `npm run dev` | Dev server with watch |
 | `npm run build` / `npm start` | Production build and run |
 | `npm run typecheck` | TypeScript check |
-| `npm run lint` / `npm run lint:fix` | ESLint |
-| `npm run format` | Prettier |
+| `npm run lint` / `npm run lint:fix` | Biome lint |
+| `npm run format` | Biome format |
 | `npm run seed` | Seed the database |
 
 ## Project layout
