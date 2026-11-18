@@ -1,4 +1,5 @@
 import {
+  eventSchema,
   eventStatusSchema,
   eventTypeSchema,
 } from '@/modules/event/schemas/resources/event.schema';
@@ -29,3 +30,11 @@ export const createEventRequestBodySchema = z
 export type CreateEventRequestBody = z.infer<
   typeof createEventRequestBodySchema
 >;
+
+export const createEventResponseSchema = z
+  .object({
+    createdEvent: eventSchema,
+  })
+  .openapi('CreateEventResponse');
+
+export type CreateEventResponse = z.infer<typeof createEventResponseSchema>;

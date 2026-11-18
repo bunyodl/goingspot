@@ -13,13 +13,26 @@ import {
   type GetEventParams,
   getEventParamsSchema,
 } from './schemas/endpoints/get-event.schema';
-import { getEventsQuerySchema } from './schemas/endpoints/get-events.schema';
+import {
+  type GetEventsQuery,
+  getEventsQuerySchema,
+} from './schemas/endpoints/get-events.schema';
+import {
+  type GetMyAttendanceQuery,
+  getMyAttendanceQuerySchema,
+} from './schemas/endpoints/get-my-attendance.schema';
 import {
   type PatchEventParams,
   type PatchEventRequestBody,
   patchEventParamsSchema,
   patchEventRequestBodySchema,
 } from './schemas/endpoints/patch-event.schema';
+import {
+  type UpsertAttendanceParams,
+  type UpsertAttendanceRequestBody,
+  upsertAttendanceParamsSchema,
+  upsertAttendanceRequestBodySchema,
+} from './schemas/endpoints/upsert-attendance.schema';
 
 export const eventsRouter = Router();
 
@@ -27,7 +40,37 @@ eventsRouter.get(
   '/',
   validate({ query: getEventsQuerySchema }),
   async (req, res) => {
-    await eventController.getMany(req, res);
+    await eventController.getMany(
+      req as unknown as Request<{}, {}, {}, GetEventsQuery>,
+      res,
+    );
+  },
+);
+
+eventsRouter.get(
+  '/me/attendance',
+  authenticate,
+  validate({ query: getMyAttendanceQuerySchema }),
+  async (req, res) => {
+    await eventController.getMyAttendance(
+      req as unknown as Request<{}, {}, {}, GetMyAttendanceQuery>,
+      res,
+    );
+  },
+);
+
+eventsRouter.put(
+  '/:eventId/attendance',
+  authenticate,
+  validate({
+    params: upsertAttendanceParamsSchema,
+    body: upsertAttendanceRequestBodySchema,
+  }),
+  async (
+    req: Request<UpsertAttendanceParams, {}, UpsertAttendanceRequestBody>,
+    res,
+  ) => {
+    await eventController.upsertAttendance(req, res);
   },
 );
 

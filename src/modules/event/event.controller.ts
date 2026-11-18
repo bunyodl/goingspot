@@ -1,8 +1,10 @@
 import type { Request, Response } from 'express';
 
 import { eventService } from '@/modules/event/event.service';
-import type { CreateEventRequestBody } from '@/modules/event/schemas/endpoints/create-event.schema';
-import type { DeleteEventResponse } from '@/modules/event/schemas/endpoints/delete-event.schema';
+import type {
+  CreateEventRequestBody,
+  CreateEventResponse,
+} from '@/modules/event/schemas/endpoints/create-event.schema';
 import type {
   GetEventParams,
   GetEventResponse,
@@ -12,10 +14,19 @@ import type {
   GetEventsResponse,
 } from '@/modules/event/schemas/endpoints/get-events.schema';
 import type {
+  GetMyAttendanceQuery,
+  GetMyAttendanceResponse,
+} from '@/modules/event/schemas/endpoints/get-my-attendance.schema';
+import type {
   PatchEventParams,
   PatchEventRequestBody,
   PatchEventResponse,
 } from '@/modules/event/schemas/endpoints/patch-event.schema';
+import type {
+  UpsertAttendanceParams,
+  UpsertAttendanceRequestBody,
+  UpsertAttendanceResponse,
+} from '@/modules/event/schemas/endpoints/upsert-attendance.schema';
 
 import { HTTP_STATUS } from '@/common/constants/http-codes';
 import { sendSuccess } from '@/common/libs/send-success';
@@ -40,12 +51,12 @@ export class EventController {
 
   async create(
     req: Request<{}, {}, CreateEventRequestBody>,
-    res: Response<ApiResponse<GetEventResponse>>,
+    res: Response<ApiResponse<CreateEventResponse>>,
   ) {
     const createdEvent = await eventService.create(req.body, req.user!.id);
 
     return sendSuccess(res, {
-      data: { event: createdEvent },
+      data: { createdEvent },
       code: HTTP_STATUS.CREATED,
     });
   }
@@ -63,15 +74,31 @@ export class EventController {
     return sendSuccess(res, { data: { updatedEvent } });
   }
 
-  async delete(
-    req: Request<GetEventParams>,
-    res: Response<ApiResponse<DeleteEventResponse>>,
+  async delete(req: Request<GetEventParams>, res: Response) {
+    await eventService.delete(req.params.eventId, req.user!);
+    return res.status(HTTP_STATUS.NO_CONTENT).send();
+  }
+
+  async upsertAttendance(
+    req: Request<UpsertAttendanceParams, {}, UpsertAttendanceRequestBody>,
+    res: Response<ApiResponse<UpsertAttendanceResponse>>,
   ) {
-    const deletedEvent = await eventService.delete(
+    const data = await eventService.upsertAttendance(
       req.params.eventId,
-      req.user!,
+      req.user!.id,
+      req.body.status,
     );
-    return sendSuccess(res, { data: { deletedEvent } });
+
+    return sendSuccess(res, { data });
+  }
+
+  async getMyAttendance(
+    req: Request<{}, {}, {}, GetMyAttendanceQuery>,
+    res: Response<ApiResponse<GetMyAttendanceResponse>>,
+  ) {
+    const data = await eventService.getMyAttendance(req.user!.id, req.query);
+
+    return sendSuccess(res, { data });
   }
 }
 

@@ -23,3 +23,15 @@ export type EventStatus = ValueOf<typeof EVENT_STATUSES>;
 export const EVENT_STATUS_VALUES = Object.values(
   EVENT_STATUSES,
 ) as NonEmptyArray<EventStatus>;
+
+/** Per-event user response (RSVP). */
+export const EVENT_ATTENDANCE_STATUSES = {
+  GOING: 'going',
+  INTERESTED: 'interested',
+  NOT_GOING: 'not_going',
+} as const;
+
+export type EventAttendanceStatus = ValueOf<typeof EVENT_ATTENDANCE_STATUSES>;
+export const EVENT_ATTENDANCE_STATUS_VALUES = Object.values(
+  EVENT_ATTENDANCE_STATUSES,
+) as NonEmptyArray<EventAttendanceStatus>;

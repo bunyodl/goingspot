@@ -1,23 +1,16 @@
 import { eventSchema } from '@/modules/event/schemas/resources/event.schema';
 
+import { paginationQuerySchema } from '@/openapi/schemas/pagination.schema';
+import { uuidV7Schema } from '@/openapi/schemas/uuid.schema';
 import { z } from '@/openapi/zod-openapi';
 
 export const getEventsQuerySchema = z
   .object({
-    page: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 1, description: 'Page number for pagination' }),
-    limit: z.coerce
-      .number()
-      .int()
-      .min(1)
-      .optional()
-      .openapi({ example: 10, description: 'Number of items per page' }),
     search: z.string().optional().openapi({
       description: 'Search term to filter events by title or description',
+    }),
+    organizerId: uuidV7Schema.optional().openapi({
+      description: 'Filter events by organizer user id',
     }),
     sort: z
       .enum(['asc', 'desc'])
@@ -28,6 +21,7 @@ export const getEventsQuerySchema = z
       .optional()
       .openapi({ example: 'date', description: 'Field to sort by' }),
   })
+  .extend(paginationQuerySchema.shape)
   .openapi('GetEventsQuery');
 
 export type GetEventsQuery = z.infer<typeof getEventsQuerySchema>;

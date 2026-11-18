@@ -33,6 +33,7 @@ export const eventSchema = z
       .array(z.string())
       .nullable()
       .openapi({ example: ['music', 'outdoor', 'festival'] }),
+    goingCount: z.number().int().nonnegative().openapi({ example: 42 }),
   })
   .extend(timestampsSchema.shape)
   .openapi('Event');
