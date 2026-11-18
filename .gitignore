@@ -9,6 +9,7 @@ node_modules/
 .env
 .*.env
 .env.*
+.seed-credentials.json
 
 # TypeScript build info files
 *.tsbuildinfo
