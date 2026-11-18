@@ -26,7 +26,8 @@ class UserRepository {
     const sortColumn =
       USER_SORT_COLUMNS[params.sortBy ?? 'createdAt'] ??
       USER_SORT_COLUMNS.createdAt;
-    const sortOrder = params.sort?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const sortOrder =
+      params.sort?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
     let query: string;
 

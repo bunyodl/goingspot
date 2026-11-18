@@ -54,7 +54,10 @@ export class AuthController {
     });
   }
 
-  async refresh(req: Request, res: Response<ApiResponse<RefreshResponse>>) {
+  async refresh(
+    req: Request,
+    res: Response<ApiResponse<RefreshResponse>>,
+  ) {
     const refreshToken = req.cookies?.[AUTH_REFRESH_COOKIE] as
       | string
       | undefined;

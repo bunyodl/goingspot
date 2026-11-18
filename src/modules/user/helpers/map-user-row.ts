@@ -1,7 +1,7 @@
-import { toIsoString } from '@/common/libs/to-iso-string';
-
 import type { UserDto } from '@/modules/user/schemas/resources/user.schema';
 import type { PublicUserRow } from '@/modules/user/types/user-row.type';
+
+import { toIsoString } from '@/common/libs/to-iso-string';
 
 export function mapUserRowToDto(row: PublicUserRow): UserDto {
   return {

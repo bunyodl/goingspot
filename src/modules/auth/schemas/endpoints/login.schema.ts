@@ -16,6 +16,7 @@ export const loginRequestBodySchema = z
 export type LoginRequestBody = z.infer<typeof loginRequestBodySchema>;
 
 /** Same JSON shape as AccessToken — refresh cookie is not in the body. */
-export const loginResponseSchema = accessTokenSchema.openapi('LoginResponse');
+export const loginResponseSchema =
+  accessTokenSchema.openapi('LoginResponse');
 
 export type LoginResponse = AccessTokenDto;

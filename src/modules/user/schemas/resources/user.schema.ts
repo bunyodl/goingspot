@@ -1,13 +1,15 @@
 import {
-  USER_ROLES,
   USER_ROLE_VALUES,
+  USER_ROLES,
 } from '@/modules/user/constants/user.constants';
 
 import { timestampsSchema } from '@/openapi/schemas/timestamps.schema';
 import { uuidV7Schema } from '@/openapi/schemas/uuid.schema';
 import { z } from '@/openapi/zod-openapi';
 
-export const userRoleSchema = z.enum(USER_ROLE_VALUES).default(USER_ROLES.USER);
+export const userRoleSchema = z
+  .enum(USER_ROLE_VALUES)
+  .default(USER_ROLES.USER);
 
 export const userSchema = z
   .object({

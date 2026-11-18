@@ -154,7 +154,8 @@ registry.registerPath({
   method: 'patch',
   path: '/api/v1/venues/{venueId}',
   summary: 'Patch a venue',
-  description: 'Partially update an existing venue with the provided fields',
+  description:
+    'Partially update an existing venue with the provided fields',
   tags: ['venues'],
   request: {
     params: patchVenueParamsSchema,

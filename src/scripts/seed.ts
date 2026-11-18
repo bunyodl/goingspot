@@ -1,8 +1,8 @@
 import 'dotenv/config';
 
-import { hash } from 'argon2';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { hash } from 'argon2';
 
 import { pool } from '@/db/pool';
 
@@ -109,7 +109,10 @@ async function seed(): Promise<void> {
 
     await client.query('COMMIT');
 
-    const credentialsPath = path.resolve(process.cwd(), '.seed-credentials.json');
+    const credentialsPath = path.resolve(
+      process.cwd(),
+      '.seed-credentials.json',
+    );
     await writeFile(
       credentialsPath,
       `${JSON.stringify(toSeedCredentials(users), null, 2)}\n`,

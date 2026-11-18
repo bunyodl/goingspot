@@ -8,4 +8,6 @@ export const deleteVenueResponseSchema = z
   })
   .openapi('DeleteVenueResponse');
 
-export type DeleteVenueResponse = z.infer<typeof deleteVenueResponseSchema>;
+export type DeleteVenueResponse = z.infer<
+  typeof deleteVenueResponseSchema
+>;

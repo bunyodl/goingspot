@@ -53,7 +53,9 @@ class VenueService {
 
   async delete(venueId: string): Promise<VenueDto> {
     if (await venueRepository.existsEventsForVenue(venueId)) {
-      throw new ConflictException('Cannot delete venue with existing events');
+      throw new ConflictException(
+        'Cannot delete venue with existing events',
+      );
     }
 
     const venueRow = await venueRepository.delete(venueId);

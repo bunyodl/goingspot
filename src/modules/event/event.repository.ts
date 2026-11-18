@@ -1,7 +1,7 @@
-import type { GetMyAttendanceQuery } from '@/modules/event/schemas/endpoints/get-my-attendance.schema';
 import type { EventAttendanceStatus } from '@/modules/event/constants/event.constants';
 import type { CreateEventRequestBody } from '@/modules/event/schemas/endpoints/create-event.schema';
 import type { GetEventsQuery } from '@/modules/event/schemas/endpoints/get-events.schema';
+import type { GetMyAttendanceQuery } from '@/modules/event/schemas/endpoints/get-my-attendance.schema';
 import type { PatchEventRequestBody } from '@/modules/event/schemas/endpoints/patch-event.schema';
 import type { EventAttendeeRow } from '@/modules/event/types/event-attendee-row.type';
 import type { EventRow } from '@/modules/event/types/event-row.type';
@@ -27,11 +27,14 @@ async function readSql(path: string) {
 class EventRepository {
   async getMany(params: GetEventsQuery): Promise<Array<EventRow>> {
     const sortColumn =
-      EVENT_SORT_COLUMNS[params.sortBy ?? 'date'] ?? EVENT_SORT_COLUMNS.date;
-    const sortOrder = params.sort?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+      EVENT_SORT_COLUMNS[params.sortBy ?? 'date'] ??
+      EVENT_SORT_COLUMNS.date;
+    const sortOrder =
+      params.sort?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const { limit, offset } = params;
     const whereClause = await readSql('./queries/event-list-where.sql');
-    const [searchPattern, organizerId] = this.eventListFilterParams(params);
+    const [searchPattern, organizerId] =
+      this.eventListFilterParams(params);
 
     const query = `
       SELECT * FROM events
@@ -50,7 +53,8 @@ class EventRepository {
 
   async getTotalCount(params: GetEventsQuery): Promise<number> {
     const whereClause = await readSql('./queries/event-list-where.sql');
-    const [searchPattern, organizerId] = this.eventListFilterParams(params);
+    const [searchPattern, organizerId] =
+      this.eventListFilterParams(params);
     const query = `SELECT COUNT(*)::text AS count FROM events ${whereClause}`;
     const result = await fetchFromDb<Array<{ count: string }>>(query, [
       searchPattern,
@@ -130,7 +134,9 @@ class EventRepository {
 
   async countGoing(eventId: string): Promise<number> {
     const query = await readSql('./queries/count-event-going.sql');
-    const rows = await fetchFromDb<Array<{ count: string }>>(query, [eventId]);
+    const rows = await fetchFromDb<Array<{ count: string }>>(query, [
+      eventId,
+    ]);
 
     return Number(rows[0]?.count ?? 0);
   }

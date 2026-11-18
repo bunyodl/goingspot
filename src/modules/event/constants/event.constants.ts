@@ -31,7 +31,9 @@ export const EVENT_ATTENDANCE_STATUSES = {
   NOT_GOING: 'not_going',
 } as const;
 
-export type EventAttendanceStatus = ValueOf<typeof EVENT_ATTENDANCE_STATUSES>;
+export type EventAttendanceStatus = ValueOf<
+  typeof EVENT_ATTENDANCE_STATUSES
+>;
 export const EVENT_ATTENDANCE_STATUS_VALUES = Object.values(
   EVENT_ATTENDANCE_STATUSES,
 ) as NonEmptyArray<EventAttendanceStatus>;

@@ -231,7 +231,10 @@ function mulberry32(seed: number): () => number {
     state = stateAfterMix; // next call starts here; unused in this call
 
     const shiftedBy15 = stateAfterMix >>> 15;
-    const mixedOnce = Math.imul(stateAfterMix ^ shiftedBy15, 1 | stateAfterMix);
+    const mixedOnce = Math.imul(
+      stateAfterMix ^ shiftedBy15,
+      1 | stateAfterMix,
+    );
 
     const shiftedBy7 = mixedOnce >>> 7;
     const mixedTwice =
@@ -301,7 +304,9 @@ export function buildSeedEvents(
   venues: SeedVenue[],
 ): SeedEvent[] {
   const events: SeedEvent[] = [];
-  const organizerPool = users.filter((user) => user.role === USER_ROLES.USER);
+  const organizerPool = users.filter(
+    (user) => user.role === USER_ROLES.USER,
+  );
   const firstEventStartsAtMs = Date.parse(FIRST_EVENT_STARTS_AT);
   const eventSpacingMs = DAYS_BETWEEN_EVENTS * MS_PER_DAY;
   const random = mulberry32(7);
@@ -313,7 +318,8 @@ export function buildSeedEvents(
     const yearSuffix = 2025 + Math.floor(index / EVENT_TITLE_SEEDS.length);
     const venue = venues[index % venues.length]!;
     const organizer =
-      organizerPool[index % organizerPool.length] ?? users[users.length - 1]!;
+      organizerPool[index % organizerPool.length] ??
+      users[users.length - 1]!;
     const eventStartsAtMs = firstEventStartsAtMs + index * eventSpacingMs;
     const date = new Date(eventStartsAtMs).toISOString();
     const halfCapacity = Math.floor(venue.capacity / 2);
@@ -388,11 +394,17 @@ export function buildSeedAttendees(
     }
 
     for (let i = 0; i < interestedTarget; i += 1) {
-      pushAttendee(shuffled[cursor++], EVENT_ATTENDANCE_STATUSES.INTERESTED);
+      pushAttendee(
+        shuffled[cursor++],
+        EVENT_ATTENDANCE_STATUSES.INTERESTED,
+      );
     }
 
     for (let i = 0; i < notGoingTarget; i += 1) {
-      pushAttendee(shuffled[cursor++], EVENT_ATTENDANCE_STATUSES.NOT_GOING);
+      pushAttendee(
+        shuffled[cursor++],
+        EVENT_ATTENDANCE_STATUSES.NOT_GOING,
+      );
     }
   }
 

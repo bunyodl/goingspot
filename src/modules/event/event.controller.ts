@@ -96,7 +96,10 @@ export class EventController {
     req: Request<{}, {}, {}, GetMyAttendanceQuery>,
     res: Response<ApiResponse<GetMyAttendanceResponse>>,
   ) {
-    const data = await eventService.getMyAttendance(req.user!.id, req.query);
+    const data = await eventService.getMyAttendance(
+      req.user!.id,
+      req.query,
+    );
 
     return sendSuccess(res, { data });
   }

@@ -98,7 +98,10 @@ eventsRouter.patch(
     params: patchEventParamsSchema,
     body: patchEventRequestBodySchema,
   }),
-  async (req: Request<PatchEventParams, {}, PatchEventRequestBody>, res) => {
+  async (
+    req: Request<PatchEventParams, {}, PatchEventRequestBody>,
+    res,
+  ) => {
     await eventController.patch(req, res);
   },
 );

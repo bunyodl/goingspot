@@ -14,7 +14,9 @@ export const patchEventRequestBodySchema = createEventRequestBodySchema
   .partial()
   .openapi('PatchEventRequestBody');
 
-export type PatchEventRequestBody = z.infer<typeof patchEventRequestBodySchema>;
+export type PatchEventRequestBody = z.infer<
+  typeof patchEventRequestBodySchema
+>;
 
 export const patchEventResponseSchema = z
   .object({

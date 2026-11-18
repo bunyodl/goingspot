@@ -54,7 +54,10 @@ export class VenueController {
     req: Request<PatchVenueParams, {}, PatchVenueRequestBody>,
     res: Response<ApiResponse<PatchVenueResponse>>,
   ) {
-    const updatedVenue = await venueService.patch(req.params.venueId, req.body);
+    const updatedVenue = await venueService.patch(
+      req.params.venueId,
+      req.body,
+    );
 
     return sendSuccess(res, { data: { updatedVenue } });
   }

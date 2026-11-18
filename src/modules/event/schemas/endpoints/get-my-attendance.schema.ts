@@ -13,7 +13,9 @@ export const getMyAttendanceQuerySchema = z
   .extend(paginationQuerySchema.shape)
   .openapi('GetMyAttendanceQuery');
 
-export type GetMyAttendanceQuery = z.infer<typeof getMyAttendanceQuerySchema>;
+export type GetMyAttendanceQuery = z.infer<
+  typeof getMyAttendanceQuerySchema
+>;
 
 export const myAttendanceItemSchema = z
   .object({

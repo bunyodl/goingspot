@@ -1,6 +1,6 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { hash, verify } from 'argon2';
 import { SignJWT } from 'jose';
-import { createHash, randomBytes } from 'node:crypto';
 
 import { authRepository } from '@/modules/auth/auth.repository';
 import type { LoginRequestBody } from '@/modules/auth/schemas/endpoints/login.schema';
@@ -17,7 +17,10 @@ import { userRepository } from '@/modules/user/user.repository';
 
 import { env } from '@/config/env';
 
-import { ConflictException, UnauthorizedException } from '@/common/exceptions';
+import {
+  ConflictException,
+  UnauthorizedException,
+} from '@/common/exceptions';
 import { durationToMs } from '@/common/libs/duration-to-ms';
 import { exists } from '@/common/libs/exists';
 
@@ -70,7 +73,8 @@ class AuthService {
     const row = await authRepository.findByTokenHash(tokenHash);
     const isMissing = !exists(row);
     const isRevoked = exists(row?.revoked_at);
-    const isExpired = exists(row) && row.expires_at.getTime() <= Date.now();
+    const isExpired =
+      exists(row) && row.expires_at.getTime() <= Date.now();
 
     if (isMissing || isRevoked || isExpired) {
       throw new UnauthorizedException('Invalid refresh token');
@@ -108,7 +112,10 @@ class AuthService {
     return mapUserRowToDto(user);
   }
 
-  async generateTokens(userId: string, role: UserRole): Promise<AuthTokenPair> {
+  async generateTokens(
+    userId: string,
+    role: UserRole,
+  ): Promise<AuthTokenPair> {
     const accessToken = await new SignJWT({ role })
       .setProtectedHeader({ alg: 'HS256' })
       .setSubject(userId)
@@ -122,7 +129,11 @@ class AuthService {
       Date.now() + durationToMs(env.JWT_REFRESH_TOKEN_EXPIRES_IN),
     );
 
-    await authRepository.createRefreshToken({ userId, tokenHash, expiresAt });
+    await authRepository.createRefreshToken({
+      userId,
+      tokenHash,
+      expiresAt,
+    });
 
     return { accessToken, refreshToken };
   }

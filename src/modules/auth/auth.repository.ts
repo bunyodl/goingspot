@@ -27,15 +27,23 @@ class AuthRepository {
     return rows[0]!;
   }
 
-  async findByTokenHash(tokenHash: string): Promise<RefreshTokenRow | null> {
-    const query = await readSql('./queries/find-refresh-token-by-hash.sql');
+  async findByTokenHash(
+    tokenHash: string,
+  ): Promise<RefreshTokenRow | null> {
+    const query = await readSql(
+      './queries/find-refresh-token-by-hash.sql',
+    );
     const rows = await fetchFromDb<RefreshTokenRow[]>(query, [tokenHash]);
 
     return rows[0] ?? null;
   }
 
-  async revokeByTokenHash(tokenHash: string): Promise<RefreshTokenRow | null> {
-    const query = await readSql('./queries/revoke-refresh-token-by-hash.sql');
+  async revokeByTokenHash(
+    tokenHash: string,
+  ): Promise<RefreshTokenRow | null> {
+    const query = await readSql(
+      './queries/revoke-refresh-token-by-hash.sql',
+    );
     const rows = await fetchFromDb<RefreshTokenRow[]>(query, [tokenHash]);
 
     return rows[0] ?? null;

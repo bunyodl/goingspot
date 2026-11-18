@@ -61,7 +61,10 @@ venuesRouter.patch(
     params: patchVenueParamsSchema,
     body: patchVenueRequestBodySchema,
   }),
-  async (req: Request<PatchVenueParams, {}, PatchVenueRequestBody>, res) => {
+  async (
+    req: Request<PatchVenueParams, {}, PatchVenueRequestBody>,
+    res,
+  ) => {
     await venueController.patch(req, res);
   },
 );

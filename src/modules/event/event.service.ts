@@ -1,7 +1,3 @@
-import type {
-  GetMyAttendanceQuery,
-  GetMyAttendanceResponse,
-} from '@/modules/event/schemas/endpoints/get-my-attendance.schema';
 import {
   EVENT_ATTENDANCE_STATUSES,
   type EventAttendanceStatus,
@@ -13,6 +9,10 @@ import type {
   GetEventsQuery,
   GetEventsResponse,
 } from '@/modules/event/schemas/endpoints/get-events.schema';
+import type {
+  GetMyAttendanceQuery,
+  GetMyAttendanceResponse,
+} from '@/modules/event/schemas/endpoints/get-my-attendance.schema';
 import type { PatchEventRequestBody } from '@/modules/event/schemas/endpoints/patch-event.schema';
 import type { UpsertAttendanceResponse } from '@/modules/event/schemas/endpoints/upsert-attendance.schema';
 import type { EventDto } from '@/modules/event/schemas/resources/event.schema';
@@ -117,10 +117,8 @@ class EventService {
         throw new NotFoundException('Venue not found');
       }
 
-      const otherGoingCount = await eventRepository.countGoingExcludingUser(
-        eventId,
-        userId,
-      );
+      const otherGoingCount =
+        await eventRepository.countGoingExcludingUser(eventId, userId);
       const isAtCapacity = otherGoingCount >= venue.capacity;
 
       if (isAtCapacity) {

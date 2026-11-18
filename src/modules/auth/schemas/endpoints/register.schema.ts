@@ -16,7 +16,9 @@ export const registerRequestBodySchema = z
   })
   .openapi('RegisterRequestBody');
 
-export type RegisterRequestBody = z.infer<typeof registerRequestBodySchema>;
+export type RegisterRequestBody = z.infer<
+  typeof registerRequestBodySchema
+>;
 
 export const registerResponseSchema = z
   .object({

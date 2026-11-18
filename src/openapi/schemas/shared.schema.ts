@@ -19,7 +19,8 @@ export const apiErrorDataSchema = z
     name: z.string().openapi({ example: 'ZodError' }),
     code: z.number().openapi({ example: 400 }),
     message: z.string().openapi({
-      example: 'Invalid input: expected string, received number at "title"',
+      example:
+        'Invalid input: expected string, received number at "title"',
     }),
   })
   .openapi('ApiErrorData');

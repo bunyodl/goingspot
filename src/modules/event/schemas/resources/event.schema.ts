@@ -1,8 +1,8 @@
 import {
-  EVENT_STATUSES,
   EVENT_STATUS_VALUES,
-  EVENT_TYPES,
+  EVENT_STATUSES,
   EVENT_TYPE_VALUES,
+  EVENT_TYPES,
 } from '@/modules/event/constants/event.constants';
 
 import { timestampsSchema } from '@/openapi/schemas/timestamps.schema';
@@ -28,7 +28,9 @@ export const eventSchema = z
     status: eventStatusSchema.openapi({ example: 'published' }),
     venueId: uuidV7Schema,
     organizerId: uuidV7Schema,
-    date: z.iso.datetime().openapi({ example: '2024-07-15T18:00:00.000Z' }),
+    date: z.iso
+      .datetime()
+      .openapi({ example: '2024-07-15T18:00:00.000Z' }),
     tags: z
       .array(z.string())
       .nullable()
