@@ -1,22 +1,12 @@
 import type { NextFunction, Request, Response } from 'express';
 import { jwtVerify } from 'jose';
 
-import {
-  USER_ROLE_VALUES,
-  type UserRole,
-} from '@/modules/user/constants/user.constants';
+import { isUserRole } from '@/modules/user/helpers/is-user-role';
 
 import { env } from '@/config/env';
 
 import { UnauthorizedException } from '@/common/exceptions';
 import { exists } from '@/common/libs/exists';
-
-function isUserRole(value: unknown): value is UserRole {
-  return (
-    typeof value === 'string' &&
-    (USER_ROLE_VALUES as readonly string[]).includes(value)
-  );
-}
 
 export async function authenticate(
   req: Request,
@@ -33,6 +23,7 @@ export async function authenticate(
   }
 
   try {
+    // Compact JWS, signature, and exp (nbf too when the token has it).
     const { payload } = await jwtVerify(
       token,
       new TextEncoder().encode(env.JWT_SECRET),
